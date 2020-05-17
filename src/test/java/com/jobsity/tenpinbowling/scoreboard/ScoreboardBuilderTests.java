@@ -1,4 +1,4 @@
-package com.jobsity.tenpinbowling.scoring;
+package com.jobsity.tenpinbowling.scoreboard;
 
 import com.jobsity.tenpinbowling.frame.Frame;
 import org.junit.jupiter.api.BeforeEach;
@@ -275,5 +275,119 @@ public class ScoreboardBuilderTests {
         assertEquals("\t\t132", frame.totalToString());
         frame = frames.get(9);
         assertEquals("\t\t151", frame.totalToString());
+    }
+
+    @Test
+    void edgeCaseFoulAsSecondScoreInTenthFrame() {
+        // 1st frame
+        scoreboardBuilder.acceptScore(10);
+
+        // 2nd frame
+        scoreboardBuilder.acceptScore(10);
+
+        // 3rd frame
+        scoreboardBuilder.acceptScore(10);
+
+        // 4th frame
+        scoreboardBuilder.acceptScore(10);
+
+        // 5th frame
+        scoreboardBuilder.acceptScore(10);
+
+        // 6th frame
+        scoreboardBuilder.acceptScore(10);
+
+        // 7th frame
+        scoreboardBuilder.acceptScore(10);
+
+        // 8th frame
+        scoreboardBuilder.acceptScore(10);
+
+        // 9th frame
+        scoreboardBuilder.acceptScore(10);
+
+        // 10th frame
+        scoreboardBuilder.acceptScore(10);
+        scoreboardBuilder.acceptFoul();
+        scoreboardBuilder.acceptScore(10);
+
+        List<Frame> frames = scoreboardBuilder.build().getFrames();
+        Frame frame = frames.get(0);
+        assertEquals("\t\tX", frame.pinfallsToString());
+        frame = frames.get(1);
+        assertEquals("\t\tX", frame.pinfallsToString());
+        frame = frames.get(2);
+        assertEquals("\t\tX", frame.pinfallsToString());
+        frame = frames.get(3);
+        assertEquals("\t\tX", frame.pinfallsToString());
+        frame = frames.get(4);
+        assertEquals("\t\tX", frame.pinfallsToString());
+        frame = frames.get(5);
+        assertEquals("\t\tX", frame.pinfallsToString());
+        frame = frames.get(6);
+        assertEquals("\t\tX", frame.pinfallsToString());
+        frame = frames.get(7);
+        assertEquals("\t\tX", frame.pinfallsToString());
+        frame = frames.get(8);
+        assertEquals("\t\tX", frame.pinfallsToString());
+        frame = frames.get(9);
+        assertEquals("\tX\tF\t/", frame.pinfallsToString());
+    }
+
+    @Test
+    void edgeCaseFoulAsFirstScoreInTenthFrameThenConvertToSpareThenZero() {
+        // 1st frame
+        scoreboardBuilder.acceptScore(10);
+
+        // 2nd frame
+        scoreboardBuilder.acceptScore(10);
+
+        // 3rd frame
+        scoreboardBuilder.acceptScore(10);
+
+        // 4th frame
+        scoreboardBuilder.acceptScore(10);
+
+        // 5th frame
+        scoreboardBuilder.acceptScore(10);
+
+        // 6th frame
+        scoreboardBuilder.acceptScore(10);
+
+        // 7th frame
+        scoreboardBuilder.acceptScore(10);
+
+        // 8th frame
+        scoreboardBuilder.acceptScore(10);
+
+        // 9th frame
+        scoreboardBuilder.acceptScore(10);
+
+        // 10th frame
+        scoreboardBuilder.acceptFoul();
+        scoreboardBuilder.acceptScore(10);
+        scoreboardBuilder.acceptScore(0);
+
+        List<Frame> frames = scoreboardBuilder.build().getFrames();
+        Frame frame = frames.get(0);
+        assertEquals("\t\tX", frame.pinfallsToString());
+        frame = frames.get(1);
+        assertEquals("\t\tX", frame.pinfallsToString());
+        frame = frames.get(2);
+        assertEquals("\t\tX", frame.pinfallsToString());
+        frame = frames.get(3);
+        assertEquals("\t\tX", frame.pinfallsToString());
+        frame = frames.get(4);
+        assertEquals("\t\tX", frame.pinfallsToString());
+        frame = frames.get(5);
+        assertEquals("\t\tX", frame.pinfallsToString());
+        frame = frames.get(6);
+        assertEquals("\t\tX", frame.pinfallsToString());
+        frame = frames.get(7);
+        assertEquals("\t\tX", frame.pinfallsToString());
+        frame = frames.get(8);
+        assertEquals("\t\tX", frame.pinfallsToString());
+        frame = frames.get(9);
+        assertEquals("\tF\t/\t0", frame.pinfallsToString());
     }
 }

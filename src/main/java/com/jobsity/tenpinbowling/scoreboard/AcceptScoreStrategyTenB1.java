@@ -1,4 +1,4 @@
-package com.jobsity.tenpinbowling.scoring;
+package com.jobsity.tenpinbowling.scoreboard;
 
 import com.jobsity.tenpinbowling.frame.Frame;
 import com.jobsity.tenpinbowling.frame.FrameRegular;
