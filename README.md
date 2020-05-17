@@ -36,7 +36,7 @@ Run `mvn test` on this project's root. Coverage is at 86% of code lines.
 * Run `mvn package` on this project's root;
 * Jar will be generated under `target`, it should be named like `ten-pin-bowling-x.x.x.jar`;
 ###Running this app's JAR
-* Run `java -jar /path/to/ten-pin-bowling-x.x.x.jar /path/to/input-file.txt`;
+* Run `java -jar /path/to/ten-pin-bowling-x.x.x.jar /path/to/input-file.txt --spring.profiles.active=prod`;
 * Make sure to use the correct file path separator according to your OS;
 ##Project Roadmap
 ###Git Flow

@@ -16,9 +16,9 @@ import java.util.Set;
 @SpringBootApplication
 public class TenPinBowlingApplication {
 
-    private Reader reader;
+    private final Reader reader;
 
-    private Printer printer;
+    private final Printer printer;
 
     public static void main(String[] args) {
         SpringApplication.run(TenPinBowlingApplication.class, args);
