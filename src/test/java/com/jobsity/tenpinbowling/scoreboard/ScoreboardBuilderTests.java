@@ -390,4 +390,80 @@ public class ScoreboardBuilderTests {
         frame = frames.get(9);
         assertEquals("\tF\t/\t0", frame.pinfallsToString());
     }
+
+    @Test
+    void spareOverflow() {
+        scoreboardBuilder.acceptScore(9);
+        assertThrows(IllegalArgumentException.class, () -> scoreboardBuilder.acceptScore(9));
+    }
+
+    @Test
+    void afterAcceptingAllPossibleScoresAnyExtraScoreInputMustBeIgnored() {
+        // 1st frame
+        scoreboardBuilder.acceptScore(1);
+        scoreboardBuilder.acceptScore(9);
+
+        // 2nd frame
+        scoreboardBuilder.acceptScore(0);
+        scoreboardBuilder.acceptScore(1);
+
+        // 3rd frame
+        scoreboardBuilder.acceptScore(1);
+        scoreboardBuilder.acceptScore(1);
+
+        // 4th frame
+        scoreboardBuilder.acceptScore(1);
+        scoreboardBuilder.acceptScore(1);
+
+        // 5th frame
+        scoreboardBuilder.acceptScore(5);
+        scoreboardBuilder.acceptScore(5);
+
+        // 6th frame
+        scoreboardBuilder.acceptScore(1);
+        scoreboardBuilder.acceptScore(1);
+
+        // 7th frame
+        scoreboardBuilder.acceptScore(1);
+        scoreboardBuilder.acceptScore(1);
+
+        // 8th frame
+        scoreboardBuilder.acceptScore(1);
+        scoreboardBuilder.acceptScore(1);
+
+        // 9th frame
+        scoreboardBuilder.acceptScore(1);
+        scoreboardBuilder.acceptScore(1);
+
+        // 10th frame
+        scoreboardBuilder.acceptScore(1);
+        scoreboardBuilder.acceptScore(9);
+        scoreboardBuilder.acceptScore(1);
+
+        // Overflow
+        scoreboardBuilder.acceptFoul();
+        scoreboardBuilder.acceptScore(1);
+
+        List<Frame> frames = scoreboardBuilder.build().getFrames();
+        Frame frame = frames.get(0);
+        assertEquals("\t1\t/", frame.pinfallsToString());
+        frame = frames.get(1);
+        assertEquals("\t0\t1", frame.pinfallsToString());
+        frame = frames.get(2);
+        assertEquals("\t1\t1", frame.pinfallsToString());
+        frame = frames.get(3);
+        assertEquals("\t1\t1", frame.pinfallsToString());
+        frame = frames.get(4);
+        assertEquals("\t5\t/", frame.pinfallsToString());
+        frame = frames.get(5);
+        assertEquals("\t1\t1", frame.pinfallsToString());
+        frame = frames.get(6);
+        assertEquals("\t1\t1", frame.pinfallsToString());
+        frame = frames.get(7);
+        assertEquals("\t1\t1", frame.pinfallsToString());
+        frame = frames.get(8);
+        assertEquals("\t1\t1", frame.pinfallsToString());
+        frame = frames.get(9);
+        assertEquals("\t1\t/\t1", frame.pinfallsToString());
+    }
 }

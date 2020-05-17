@@ -5,6 +5,7 @@ import com.jobsity.tenpinbowling.scoreboard.ScoreboardBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,10 +27,12 @@ public class Reader {
         Map<String, ScoreboardBuilder> scoreboardBuilders = new LinkedHashMap<>(); // Keeping insertion order
         try (BufferedReader bufferedReader = Files.newBufferedReader(pathToInputFile)) {
             bufferedReader.lines()
+            .map(String::trim)
+            .filter(line -> !StringUtils.isEmpty(line))
             .map(line -> line.split("\t"))
             .peek(data -> createScoreboardBuilderIfNeeded(scoreboardBuilders, data))
             .forEach(data -> sendScoreToScoreboardBuilder(scoreboardBuilders, data));
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOGGER.error("Fatal error while reading input file.", e);
             throw new RuntimeException(e);
         }
