@@ -38,3 +38,16 @@ Run `mvn test` on this project's root. Coverage is at 86% of code lines.
 ###Running this app's JAR
 * Run `java -jar /path/to/ten-pin-bowling-x.x.x.jar /path/to/input-file.txt`;
 * Make sure to use the correct file path separator according to your OS;
+##Project Roadmap
+###Git Flow
+I used Git Flow principles and plugin to manage this project's versions.
+###Features
+Find below what was developed in each feature branch.
+####FEAT-1
+Read input file and successfully convert into Java objects.
+####FEAT-2
+Do score calculation.
+####FEAT-3
+Print out score table.
+####FEAT-4
+Handle bad input file (formatting and invalid scores).
