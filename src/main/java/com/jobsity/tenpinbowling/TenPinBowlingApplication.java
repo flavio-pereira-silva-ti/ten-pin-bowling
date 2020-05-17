@@ -1,5 +1,6 @@
 package com.jobsity.tenpinbowling;
 
+import com.jobsity.tenpinbowling.scoring.Scoreboard;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,7 +9,6 @@ import org.springframework.context.annotation.Profile;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Set;
 
 @SpringBootApplication
 public class TenPinBowlingApplication {
@@ -34,7 +34,8 @@ public class TenPinBowlingApplication {
 
     private void run(String[] args) {
         Path pathToInputFile = Paths.get(args[0]);
-        Set<ScoreBoard> scoreBoards = reader.createScoreBoardsFromFile(pathToInputFile);
-//        scoreBoards.stream().peek(ScoreBoard::calculateScores).forEach(printer::printOutScoreBoard);
+        reader.createScoreBoardsFromFile(pathToInputFile).stream()
+        .peek(Scoreboard::calculateScores)
+        .forEach(printer::printOutScoreBoard);
     }
 }

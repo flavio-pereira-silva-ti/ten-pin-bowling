@@ -1,5 +1,7 @@
 package com.jobsity.tenpinbowling;
 
+import com.jobsity.tenpinbowling.scoring.Scoreboard;
+import com.jobsity.tenpinbowling.scoring.ScoreboardBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -13,36 +15,42 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static java.util.stream.Collectors.toCollection;
+
 @Component
 public class Reader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Reader.class);
 
-    public Set<ScoreBoard> createScoreBoardsFromFile(Path pathToInputFile) {
-        Map<String, ScoreBoard> scoreBoards = new LinkedHashMap<>(); // Keeping insertion order
+    public Set<Scoreboard> createScoreBoardsFromFile(Path pathToInputFile) {
+        Map<String, ScoreboardBuilder> scoreboardBuilders = new LinkedHashMap<>(); // Keeping insertion order
         try (BufferedReader bufferedReader = Files.newBufferedReader(pathToInputFile)) {
             bufferedReader.lines()
             .map(line -> line.split("\t"))
-            .peek(data -> createScoreBoardIfNeeded(scoreBoards, data))
-            .forEach(data -> updateScoreBoard(scoreBoards, data));
+            .peek(data -> createScoreboardBuilderIfNeeded(scoreboardBuilders, data))
+            .forEach(data -> sendScoreToScoreboardBuilder(scoreboardBuilders, data));
         } catch (IOException e) {
             LOGGER.error("Fatal error while reading input file.", e);
             throw new RuntimeException(e);
         }
-        return new LinkedHashSet<>(scoreBoards.values());
+        return scoreboardBuilders
+        .values()
+        .stream()
+        .map(ScoreboardBuilder::build)
+        .collect(toCollection(LinkedHashSet::new));
     }
 
-    private void createScoreBoardIfNeeded(Map<String, ScoreBoard> scoreBoards, String[] data) {
+    private void createScoreboardBuilderIfNeeded(Map<String, ScoreboardBuilder> scoreboardBuilders, String[] data) {
         String name = data[0];
-        scoreBoards.computeIfAbsent(name, ScoreBoard::new);
+        scoreboardBuilders.computeIfAbsent(name, ScoreboardBuilder::new);
     }
 
-    private void updateScoreBoard(Map<String, ScoreBoard> scoreBoards, String[] data) {
+    private void sendScoreToScoreboardBuilder(Map<String, ScoreboardBuilder> scoreboardBuilders, String[] data) {
         String name = data[0];
         String scoreStr = data[1];
-        ScoreBoard scoreBoard = scoreBoards.get(name);
+        ScoreboardBuilder scoreboardBuilder = scoreboardBuilders.get(name);
         if ("F".equals(scoreStr)) {
-            scoreBoard.acceptFoul();
+            scoreboardBuilder.acceptFoul();
         } else { // Try to convert score to an Integer
             Integer score;
             try {
@@ -51,7 +59,7 @@ public class Reader {
                 LOGGER.error("Fatal error updating score board. " + name + "\t" + scoreStr);
                 throw new RuntimeException(e);
             }
-            scoreBoard.acceptScore(score);
+            scoreboardBuilder.acceptScore(score);
         }
     }
 }
