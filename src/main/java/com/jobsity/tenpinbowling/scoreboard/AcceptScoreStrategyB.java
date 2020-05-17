@@ -1,4 +1,4 @@
-package com.jobsity.tenpinbowling.scoring;
+package com.jobsity.tenpinbowling.scoreboard;
 
 import com.jobsity.tenpinbowling.frame.Frame;
 import com.jobsity.tenpinbowling.frame.FrameRegular;
@@ -6,6 +6,10 @@ import com.jobsity.tenpinbowling.frame.FrameSpare;
 
 import java.util.List;
 
+/**
+ * This strategy is used to take a frame's second score (from frame 1 to 9),
+ * then it resets to strategy A or strategy A for frame ten.
+ */
 public class AcceptScoreStrategyB extends AcceptScoreStrategy {
 
     private final int scoreA;

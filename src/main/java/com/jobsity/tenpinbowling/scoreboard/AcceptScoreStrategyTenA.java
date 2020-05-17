@@ -1,9 +1,12 @@
-package com.jobsity.tenpinbowling.scoring;
+package com.jobsity.tenpinbowling.scoreboard;
 
 import com.jobsity.tenpinbowling.frame.Frame;
 
 import java.util.List;
 
+/**
+ * This strategy handles the first score for frame number 10 and, based on that, decides what's the next strategy.
+ */
 public class AcceptScoreStrategyTenA extends AcceptScoreStrategy {
 
     public AcceptScoreStrategyTenA() {

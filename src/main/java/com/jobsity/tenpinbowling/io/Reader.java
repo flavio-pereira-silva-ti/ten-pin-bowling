@@ -1,7 +1,7 @@
-package com.jobsity.tenpinbowling;
+package com.jobsity.tenpinbowling.io;
 
-import com.jobsity.tenpinbowling.scoring.Scoreboard;
-import com.jobsity.tenpinbowling.scoring.ScoreboardBuilder;
+import com.jobsity.tenpinbowling.scoreboard.Scoreboard;
+import com.jobsity.tenpinbowling.scoreboard.ScoreboardBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.jobsity.tenpinbowling.scoring;
+package com.jobsity.tenpinbowling.scoreboard;
 
 import com.jobsity.tenpinbowling.frame.Frame;
 import com.jobsity.tenpinbowling.frame.FrameRegular;
@@ -7,6 +7,9 @@ import com.jobsity.tenpinbowling.frame.FrameTenStrike;
 
 import java.util.List;
 
+/**
+ * Handles the final score acceptable by frame 10.
+ */
 public class AcceptScoreStrategyTenC extends AcceptScoreStrategy {
 
     private final int scoreA;
