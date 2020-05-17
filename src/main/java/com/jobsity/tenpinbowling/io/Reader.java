@@ -32,7 +32,7 @@ public class Reader {
             .map(line -> line.split("\t"))
             .peek(data -> createScoreboardBuilderIfNeeded(scoreboardBuilders, data))
             .forEach(data -> sendScoreToScoreboardBuilder(scoreboardBuilders, data));
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOGGER.error("Fatal error while reading input file.", e);
             throw new RuntimeException(e);
         }
