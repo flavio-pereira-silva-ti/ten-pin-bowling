@@ -38,6 +38,10 @@ public class ScoreboardBuilder {
     }
 
     private void acceptScore(Integer score, boolean isFoul) {
+        if (acceptScoreStrategy == null) {
+            // This board is already completed. Ignoring this score.
+            return;
+        }
         AcceptScoreStrategy nextStrategy;
         if (isFoul) {
             nextStrategy = acceptScoreStrategy.acceptFoulAndChangeStrategy(frames);
