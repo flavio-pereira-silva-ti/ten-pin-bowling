@@ -8,14 +8,18 @@ public class Frame {
 
     protected Integer score1;
 
+    protected String score1Str;
+
     protected Integer score2;
+
+    protected String score2Str;
 
     private Integer total;
 
-    public void acceptScore(Integer score) {
+    public void acceptScore(Integer score, boolean isFoul) {
         switch (state) {
             case EMPTY:
-                acceptFirstScore(score);
+                acceptFirstScore(score, isFoul);
                 break;
             case ACCEPTING_SECOND_SCORE:
                 acceptSecondScore(score);
@@ -28,17 +32,24 @@ public class Frame {
         }
     }
 
-    protected void acceptFirstScore(Integer score) {
+    protected void acceptFirstScore(Integer score, boolean isFoul) {
         score1 = score;
         if (isStrike(score)) {
+            score1Str = "";
+            score2Str = "X";
             state = CLOSED;
         } else {
+            score1Str = String.valueOf(score);
             state = ACCEPTING_SECOND_SCORE;
+        }
+        if (isFoul) {
+            score1Str = "F";
         }
     }
 
     protected void acceptSecondScore(Integer score) {
         score2 = score;
+        score2Str = didSpare() ? "/" : String.valueOf(score);
         state = CLOSED;
     }
 
@@ -51,16 +62,14 @@ public class Frame {
     }
 
     public String pinfallsToString() {
-        if (isStrike(score1)) {
-            return "\t\tX";
-        }
-        if (score1 + score2 == 10) {
-            return String.format("\t%d\t/", score1);
-        }
-        return String.format("\t%d\t%d", score1, score2);
+        return "\t" + score1Str + "\t" + score2Str;
     }
 
     protected boolean isStrike(Integer score) {
         return Integer.valueOf(10).equals(score);
+    }
+
+    protected boolean didSpare() {
+        return score1 + score2 == 10;
     }
 }

@@ -87,7 +87,7 @@ public class ScoreBoardTests {
         frame = frames.get(FramePos.FRAME_9);
         assertEquals("\t1\t1", frame.pinfallsToString());
         frame = frames.get(FramePos.FRAME_10);
-        assertEquals("\t1\t9\t1", frame.pinfallsToString());
+        assertEquals("\t1\t/\t1", frame.pinfallsToString());
     }
 
     @Test

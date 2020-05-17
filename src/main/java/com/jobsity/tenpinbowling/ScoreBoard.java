@@ -16,7 +16,7 @@ public class ScoreBoard {
 
     public ScoreBoard(String name) {
         this.name = name;
-        frames = new HashMap<>();
+        frames = new LinkedHashMap<>();
         frames.put(FRAME_1, new Frame());
         frames.put(FRAME_2, new Frame());
         frames.put(FRAME_3, new Frame());
@@ -31,19 +31,25 @@ public class ScoreBoard {
         currentFramePos = framePosIterator.next();
     }
 
+    public void acceptFoul() {
+        acceptScore(0, true);
+    }
+
     public void acceptScore(Integer score) {
+        acceptScore(score, false);
+    }
+
+    private void acceptScore(Integer score, boolean isFoul) {
         if (score < 0 || score > 10) {
             throw new IllegalArgumentException("Scores must be between 0 and 10. " + name + "\t" + score);
         }
-//        if (END.equals(currentFramePos)) {
-//            throw new IllegalStateException("This board cannot take anymore scores.");
-//        }
+        if (END.equals(currentFramePos)) {
+            throw new IllegalStateException("This board cannot take anymore scores.");
+        }
         Frame frame = frames.get(currentFramePos);
-        frame.acceptScore(score);
-        if (frame.isClosed()) {
-            if (framePosIterator.hasNext()) {
-                currentFramePos = framePosIterator.next();
-            }
+        frame.acceptScore(score, isFoul);
+        if (frame.isClosed() && framePosIterator.hasNext()) {
+            currentFramePos = framePosIterator.next();
         }
     }
 

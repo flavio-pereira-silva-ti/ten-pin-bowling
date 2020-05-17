@@ -6,16 +6,25 @@ public class Frame10 extends Frame {
 
     private Integer score3;
 
+    private String score3Str;
+
     @Override
-    protected void acceptFirstScore(Integer score) {
+    protected void acceptFirstScore(Integer score, boolean isFoul) {
         score1 = score;
+        score1Str = isStrike(score) ? "X" : String.valueOf(score);
+        if (isFoul) {
+            score1Str = "F";
+        }
         state = ACCEPTING_SECOND_SCORE;
     }
 
     @Override
     public void acceptSecondScore(Integer score) {
         super.acceptSecondScore(score);
-        if (score2 == 10 || score1 + score2 == 10) {
+        if (isStrike(score)) {
+            score2Str = "X";
+        }
+        if (isStrike(score) || didSpare() || score1.equals(10)) {
             state = ACCEPTING_THIRD_SCORE;
         }
     }
@@ -23,15 +32,16 @@ public class Frame10 extends Frame {
     @Override
     protected void acceptThirdScore(Integer score) {
         score3 = score;
+        if (isStrike(score)) {
+            score3Str = "X";
+        } else {
+            score3Str = String.valueOf(score);
+        }
         state = CLOSED;
     }
 
     @Override
     public String pinfallsToString() {
-        return String.format("\t%s\t%s\t%s", scoreToString(score1), scoreToString(score2), scoreToString(score3));
-    }
-
-    private String scoreToString(Integer score) {
-        return isStrike(score) ? "X" : String.valueOf(score);
+        return "\t" + score1Str + "\t" + score2Str + "\t" + score3Str;
     }
 }
